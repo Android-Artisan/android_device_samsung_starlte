@@ -76,8 +76,26 @@ jobs:
             libc6-dev lib32ncurses-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils \
             xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses-dev libsdl1.2-dev \
             build-essential libgtk-3-dev libglu1-mesa-dev freeglut3-dev git libxml2 lzop pngcrush schedtool squashfs-tools \
-            imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses6 python2-minimal tar
+            imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses6 python3 tar
 
+    - name: Install Python 2.7.18 from source
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential libssl-dev zlib1g-dev \
+        libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+        libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
+        libffi-dev liblzma-dev
+
+        cd /usr/src
+        sudo wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+        sudo tar xzf Python-2.7.18.tgz
+        cd Python-2.7.18
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+
+        # Create symlink for python2
+        sudo ln -s /usr/local/bin/python2.7 /usr/bin/python2
+        
     - name: Check Python 2
       run: python2 --version
 
